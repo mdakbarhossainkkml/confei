@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            body {
+                font-family: 'Shojumaru', cursive;
+                background-color: #b38867;
+            }
+
+            .title {
+                font-size: 100px;
+                color: white;
+                text-align: center;
+            }
+
+            .emoji-container {
+                margin-bottom: 25px;
+                margin-top: 25px;
+                text-align: center;
+            }
+
+            .emoji {
+                font-size: 200px;
+            }
+
+            .button-container {
+                text-align: center;
+            }
+        </style>
+    </head>
+
+
+    <body>
+        <div class="title">Eid Mubbrak</div>
+        <div class="emoji-container">
+            <span class="emoji">🎉</span>
+            <!-- <span class="emoji">😎</span> -->
+            <span class="emoji">🎊</span>
+        </div>
+        <div class="button-container"><button onclick="basic()">Basic</button>
+            <button onclick="randomDirection()">Random direction</button>
+            <button id="makeItRain" onclick="makeItRain()">Make it rain</button>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+        <script>
+            function basic() {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            function randomDirection() {
+                confetti({
+                    angle: randomInRange(55, 125),
+                    spread: randomInRange(50, 70),
+                    particleCount: randomInRange(50, 100),
+                    origin: { y: 0.6 }
+                });
+            }
+
+            function makeItRain() {
+                const duration = 15 * 1000,
+                    animationEnd = Date.now() + duration,
+                    defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(function () {
+                    const timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    const particleCount = 50 * (timeLeft / duration);
+
+                    // since particles fall down, start a bit higher than random
+                    confetti(
+                        Object.assign({}, defaults, {
+                            particleCount,
+                            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                        })
+                    );
+                    confetti(
+                        Object.assign({}, defaults, {
+                            particleCount,
+                            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                        })
+                    );
+                }, 250);
+            }
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+            window.onload = function () {
+                makeItRain();
+            };
+        </script>
+    </body>
+
+
+
+</html>
